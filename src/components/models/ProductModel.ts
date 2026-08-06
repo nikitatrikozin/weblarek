@@ -1,26 +1,26 @@
 import { IProduct } from "../../types";
 
 export class ProductModel {
-    private products: IProduct[] = [];
-    private preview: IProduct | null = null;
+  private products: IProduct[] = [];
+  private preview: IProduct | null = null;
 
-    setProducts(products: IProduct[]): void {
-        this.products = products;
-    }
+  setProducts(products: IProduct[]): void {
+    this.products = products;
+  }
 
-    getProducts(): IProduct[] {
-        return this.products;
-    }
+  getProducts(): IProduct[] {
+    return this.products;
+  }
 
-    getProduct(id: string): IProduct | undefined {
-        return this.products.find((product) => product.id === id);
-    }
+  getProduct(id: string): IProduct | undefined {
+    return this.products.find((product) => product.id === id);
+  }
 
-    setPreview(product: IProduct): void {
-        this.preview = product;
-    }
+  setPreview(product: IProduct): void {
+    this.preview = product;
+  }
 
-    getPreview(): IProduct | null {
-        return this.preview;
-    }
+  getPreview(): IProduct | null {
+    return this.preview;
+  }
 }
