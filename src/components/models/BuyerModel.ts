@@ -26,7 +26,7 @@ export class BuyerModel {
 
   getData(): IBuyer {
     return {
-      payment: this.payment as TPayment,
+      payment: this.payment,
       email: this.email,
       phone: this.phone,
       address: this.address,
@@ -40,8 +40,8 @@ export class BuyerModel {
     this.address = "";
   }
 
-  validate(): Partial<Record<keyof IBuyer, string>> {
-    const errors: Partial<Record<keyof IBuyer, string>> = {};
+  validate(): TValidationErrors {
+    const errors: TValidationErrors = {};
 
     if (!this.payment) {
       errors.payment = "Не выбран способ оплаты";
