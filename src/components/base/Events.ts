@@ -3,14 +3,17 @@
 type EventName = string | RegExp;
 type Subscriber = Function;
 type EmitterEvent = {
-    eventName: string,
-    data: unknown
+    eventName: string;
+    data: unknown;
 };
 
 export interface IEvents {
     on<T extends object>(event: EventName, callback: (data: T) => void): void;
     emit<T extends object>(event: string, data?: T): void;
-    trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void;
+    trigger<T extends object>(
+        event: string,
+        context?: Partial<T>,
+    ): (data: T) => void;
 }
 
 /**
@@ -52,12 +55,18 @@ export class EventEmitter implements IEvents {
      */
     emit<T extends object>(eventName: string, data?: T) {
         this._events.forEach((subscribers, name) => {
-            if (name === '*') subscribers.forEach(callback => callback({
-                eventName,
-                data
-            }));
-            if (name instanceof RegExp && name.test(eventName) || name === eventName) {
-                subscribers.forEach(callback => callback(data));
+            if (name === "*")
+                subscribers.forEach((callback) =>
+                    callback({
+                        eventName,
+                        data,
+                    }),
+                );
+            if (
+                (name instanceof RegExp && name.test(eventName)) ||
+                name === eventName
+            ) {
+                subscribers.forEach((callback) => callback(data));
             }
         });
     }
@@ -83,9 +92,8 @@ export class EventEmitter implements IEvents {
         return (event: object = {}) => {
             this.emit(eventName, {
                 ...(event || {}),
-                ...(context || {})
+                ...(context || {}),
             });
         };
     }
 }
-
