@@ -2,17 +2,17 @@ import { Component } from "../base/Component";
 import { IEvents } from "../base/Events";
 import { ensureElement } from "../../utils/utils";
 
-interface IModal {
+interface ModalData {
     content: HTMLElement;
 }
 
-export class Modal extends Component<IModal> {
+export class Modal extends Component<ModalData> {
     protected closeButton: HTMLButtonElement;
-    protected content: HTMLElement;
+    protected contentElement: HTMLElement;
 
     constructor(
-        protected events: IEvents,
         container: HTMLElement,
+        private events: IEvents,
     ) {
         super(container);
 
@@ -21,7 +21,7 @@ export class Modal extends Component<IModal> {
             this.container,
         );
 
-        this.content = ensureElement<HTMLElement>(
+        this.contentElement = ensureElement<HTMLElement>(
             ".modal__content",
             this.container,
         );
@@ -37,25 +37,17 @@ export class Modal extends Component<IModal> {
         });
     }
 
-    set contentElement(value: HTMLElement) {
-        this.content.replaceChildren(value);
+    set content(value: HTMLElement) {
+        this.contentElement.replaceChildren(value);
     }
 
     open(content: HTMLElement): void {
-        this.content.replaceChildren(content);
+        this.content = content;
         this.container.classList.add("modal_active");
     }
 
     close(): void {
         this.container.classList.remove("modal_active");
-        this.content.replaceChildren();
-    }
-
-    render(data?: Partial<IModal>): HTMLElement {
-        if (data?.content) {
-            this.contentElement = data.content;
-        }
-
-        return this.container;
+        this.contentElement.replaceChildren();
     }
 }

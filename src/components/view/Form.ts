@@ -1,55 +1,39 @@
-import { Component } from '../base/Component';
-import { IEvents } from '../base/Events';
-import { ensureElement } from '../../utils/utils';
+import { Component } from "../base/Component";
+import { IEvents } from "../base/Events";
+import { ensureElement } from "../../utils/utils";
 
 export interface IForm {
     valid: boolean;
     errors: string;
 }
 
-export class Form<T> extends Component<T> {
+export abstract class Form<T extends IForm> extends Component<T> {
     protected submitButton: HTMLButtonElement;
     protected errorsElement: HTMLElement;
 
     constructor(
+        container: HTMLFormElement,
         protected events: IEvents,
-        container: HTMLFormElement
     ) {
         super(container);
 
         this.submitButton = ensureElement<HTMLButtonElement>(
             'button[type="submit"]',
-            container
+            this.container,
         );
 
         this.errorsElement = ensureElement<HTMLElement>(
-            '.form__errors',
-            container
+            ".form__errors",
+            this.container,
         );
 
-        container.addEventListener('submit', (event) => {
+        this.container.addEventListener("submit", (event) => {
             event.preventDefault();
 
-            this.events.emit(`${container.name}:submit`, {
-                ...this.getFormData()
-            });
+            if (!this.submitButton.disabled) {
+                this.onSubmit();
+            }
         });
-
-        container.addEventListener('input', () => {
-            this.events.emit(`${container.name}:change`, {
-                ...this.getFormData()
-            });
-        });
-    }
-
-    protected getFormData(): Record<string, string> {
-        const formData = new FormData(
-            this.container as HTMLFormElement
-        );
-
-        return Object.fromEntries(
-            formData.entries()
-        ) as Record<string, string>;
     }
 
     set valid(value: boolean) {
@@ -59,4 +43,6 @@ export class Form<T> extends Component<T> {
     set errors(value: string) {
         this.errorsElement.textContent = value;
     }
+
+    protected abstract onSubmit(): void;
 }

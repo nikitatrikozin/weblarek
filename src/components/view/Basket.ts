@@ -1,8 +1,8 @@
 import { Component } from "../base/Component";
-import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/Events";
+import { ensureElement } from "../../utils/utils";
 
-interface IBasket {
+export interface IBasket {
     items: HTMLElement[];
     total: number;
 }
@@ -13,8 +13,8 @@ export class Basket extends Component<IBasket> {
     protected button: HTMLButtonElement;
 
     constructor(
-        protected events: IEvents,
         container: HTMLElement,
+        private events: IEvents,
     ) {
         super(container);
 
@@ -34,7 +34,7 @@ export class Basket extends Component<IBasket> {
         );
 
         this.button.addEventListener("click", () => {
-            this.events.emit("order:open");
+            this.events.emit("order:render");
         });
     }
 

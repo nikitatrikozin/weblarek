@@ -1,11 +1,19 @@
 import { Component } from "../base/Component";
 
-interface IGallery {
+interface GalleryData {
     catalog: HTMLElement[];
 }
 
-export class Gallery extends Component<IGallery> {
+export class Gallery extends Component<GalleryData> {
+    protected catalogElement: HTMLElement;
+
+    constructor(container: HTMLElement) {
+        super(container);
+
+        this.catalogElement = container;
+    }
+
     set catalog(items: HTMLElement[]) {
-        this.container.replaceChildren(...items);
+        this.catalogElement.replaceChildren(...items);
     }
 }

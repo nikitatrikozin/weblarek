@@ -1,26 +1,37 @@
 import { IProduct } from "../../types";
+import { IEvents } from "../base/Events";
 
 export class ProductModel {
-  private products: IProduct[] = [];
-  private preview: IProduct | null = null;
+    private products: IProduct[] = [];
+    private preview: IProduct | null = null;
 
-  setProducts(products: IProduct[]): void {
-    this.products = products;
-  }
+    constructor(private events: IEvents) { }
 
-  getProducts(): IProduct[] {
-    return this.products;
-  }
+    setProducts(products: IProduct[]): void {
+        this.products = products;
 
-  getProduct(id: string): IProduct | undefined {
-    return this.products.find((product) => product.id === id);
-  }
+        this.events.emit("products:changed", {
+            products: this.products,
+        });
+    }
 
-  setPreview(product: IProduct): void {
-    this.preview = product;
-  }
+    getProducts(): IProduct[] {
+        return this.products;
+    }
 
-  getPreview(): IProduct | null {
-    return this.preview;
-  }
+    getProduct(id: string): IProduct | undefined {
+        return this.products.find((product) => product.id === id);
+    }
+
+    setPreview(product: IProduct): void {
+        this.preview = product;
+
+        this.events.emit("preview:changed", {
+            product: this.preview,
+        });
+    }
+
+    getPreview(): IProduct | null {
+        return this.preview;
+    }
 }

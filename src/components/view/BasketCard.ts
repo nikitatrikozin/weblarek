@@ -1,9 +1,10 @@
 import { Component } from "../base/Component";
+import { IEvents } from "../base/Events";
 import { ensureElement } from "../../utils/utils";
 import { IProduct } from "../../types";
-import { IEvents } from "../base/Events";
 
 interface IBasketCard {
+    id: string;
     title: string;
     price: number | null;
     index: number;
@@ -16,8 +17,8 @@ export class BasketCard extends Component<IBasketCard> {
     protected button: HTMLButtonElement;
 
     constructor(
-        protected events: IEvents,
         container: HTMLElement,
+        private events: IEvents,
         private product: IProduct,
     ) {
         super(container);
@@ -44,7 +45,7 @@ export class BasketCard extends Component<IBasketCard> {
 
         this.button.addEventListener("click", () => {
             this.events.emit("basket:remove", {
-                product: this.product,
+                id: this.product.id,
             });
         });
     }

@@ -1,6 +1,6 @@
 import { Component } from "../base/Component";
-import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/Events";
+import { ensureElement } from "../../utils/utils";
 
 interface ISuccess {
     total: number;
@@ -11,8 +11,8 @@ export class Success extends Component<ISuccess> {
     protected closeButton: HTMLButtonElement;
 
     constructor(
-        protected events: IEvents,
         container: HTMLElement,
+        private events: IEvents,
     ) {
         super(container);
 

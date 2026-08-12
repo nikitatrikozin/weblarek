@@ -3,15 +3,20 @@ import { Card, ICard } from "./Card";
 
 export class CatalogCard extends Card<ICard> {
     constructor(
-        protected events: IEvents,
         container: HTMLElement,
-        private product: ICard,
+        private events: IEvents,
     ) {
         super(container);
 
         this.container.addEventListener("click", () => {
+            const id = this.container.dataset.id;
+
+            if (!id) {
+                return;
+            }
+
             this.events.emit("card:select", {
-                product: this.product,
+                id,
             });
         });
     }

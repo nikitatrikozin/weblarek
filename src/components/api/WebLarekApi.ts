@@ -1,5 +1,9 @@
-import { IApi } from "../../types";
-import { IProductsResponse, IOrderRequest, IOrderResponse } from "../../types";
+import {
+    IApi,
+    IProductsResponse,
+    IOrderRequest,
+    IOrderResponse,
+} from "../../types";
 
 export class WebLarekApi {
     constructor(private api: IApi) { }

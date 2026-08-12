@@ -47,7 +47,6 @@ export class Card<T extends ICard> extends Component<T> {
 
     set category(value: string) {
         this.categoryElement.textContent = value;
-
         this.categoryElement.className = `card__category ${categoryMap[value as keyof typeof categoryMap]}`;
     }
 
@@ -61,5 +60,9 @@ export class Card<T extends ICard> extends Component<T> {
     set price(value: number | null) {
         this.priceElement.textContent =
             value === null ? "Бесценно" : `${value} синапсов`;
+    }
+
+    set id(value: string) {
+        this.container.dataset.id = value;
     }
 }

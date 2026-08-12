@@ -1,10 +1,11 @@
-/**
- * Базовый компонент
- */
 export abstract class Component<T> {
-    constructor(protected readonly container: HTMLElement) { }
+    protected constructor(protected readonly container: HTMLElement) { }
 
-    protected setImage(element: HTMLImageElement, src: string, alt?: string) {
+    protected setImage(
+        element: HTMLImageElement,
+        src: string,
+        alt?: string,
+    ): void {
         if (element) {
             element.src = src;
 

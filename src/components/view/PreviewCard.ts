@@ -7,9 +7,8 @@ export class PreviewCard extends Card<ICard> {
     protected button: HTMLButtonElement;
 
     constructor(
-        protected events: IEvents,
         container: HTMLElement,
-        private product: ICard,
+        private events: IEvents,
     ) {
         super(container);
 
@@ -24,8 +23,14 @@ export class PreviewCard extends Card<ICard> {
         );
 
         this.button.addEventListener("click", () => {
+            const id = this.container.dataset.id;
+
+            if (!id) {
+                return;
+            }
+
             this.events.emit("card:buy", {
-                product: this.product,
+                id,
             });
         });
     }

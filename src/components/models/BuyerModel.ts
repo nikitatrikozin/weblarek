@@ -1,64 +1,75 @@
 import { IBuyer, TPayment, TValidationErrors } from "../../types";
+import { IEvents } from "../base/Events";
 
 export class BuyerModel {
-  private payment: TPayment | null = null;
-  private email: string = "";
-  private phone: string = "";
-  private address: string = "";
+    private payment: TPayment | null = null;
+    private email = "";
+    private phone = "";
+    private address = "";
 
-  setData(data: Partial<IBuyer>): void {
-    if (data.payment !== undefined) {
-      this.payment = data.payment;
+    constructor(private events: IEvents) { }
+
+    setData(data: Partial<IBuyer>): void {
+        if (data.payment !== undefined) {
+            this.payment = data.payment;
+        }
+
+        if (data.email !== undefined) {
+            this.email = data.email;
+        }
+
+        if (data.phone !== undefined) {
+            this.phone = data.phone;
+        }
+
+        if (data.address !== undefined) {
+            this.address = data.address;
+        }
+
+        this.events.emit("buyer:changed", {
+            buyer: this.getData(),
+        });
     }
 
-    if (data.email !== undefined) {
-      this.email = data.email;
+    getData(): IBuyer {
+        return {
+            payment: this.payment,
+            email: this.email,
+            phone: this.phone,
+            address: this.address,
+        };
     }
 
-    if (data.phone !== undefined) {
-      this.phone = data.phone;
+    clear(): void {
+        this.payment = null;
+        this.email = "";
+        this.phone = "";
+        this.address = "";
+
+        this.events.emit("buyer:changed", {
+            buyer: this.getData(),
+        });
     }
 
-    if (data.address !== undefined) {
-      this.address = data.address;
+    validate(): TValidationErrors {
+        const errors: TValidationErrors = {};
+
+        if (!this.payment) {
+            errors.payment = "Не выбран способ оплаты";
+        }
+
+        if (!this.email.trim()) {
+            errors.email = "Введите email";
+        }
+
+        if (!this.phone.trim()) {
+            errors.phone = "Введите телефон";
+        }
+
+        if (!this.address.trim()) {
+            errors.address = "Введите адрес";
+        }
+
+        return errors;
     }
-  }
-
-  getData(): IBuyer {
-    return {
-      payment: this.payment,
-      email: this.email,
-      phone: this.phone,
-      address: this.address,
-    };
-  }
-
-  clear(): void {
-    this.payment = null;
-    this.email = "";
-    this.phone = "";
-    this.address = "";
-  }
-
-  validate(): TValidationErrors {
-    const errors: TValidationErrors = {};
-
-    if (!this.payment) {
-      errors.payment = "Не выбран способ оплаты";
-    }
-
-    if (!this.email) {
-      errors.email = "Введите email";
-    }
-
-    if (!this.phone) {
-      errors.phone = "Введите телефон";
-    }
-
-    if (!this.address) {
-      errors.address = "Введите адрес";
-    }
-
-    return errors;
-  }
 }
