@@ -1,15 +1,11 @@
-import { IEvents } from "../base/Events";
-import { ensureElement } from "../../utils/utils";
 import { Card, ICard } from "./Card";
+import { ensureElement } from "../../utils/utils";
 
 export class PreviewCard extends Card<ICard> {
     protected descriptionElement: HTMLElement;
     protected button: HTMLButtonElement;
 
-    constructor(
-        container: HTMLElement,
-        private events: IEvents,
-    ) {
+    constructor(container: HTMLElement, onBuy: () => void) {
         super(container);
 
         this.descriptionElement = ensureElement<HTMLElement>(
@@ -22,17 +18,15 @@ export class PreviewCard extends Card<ICard> {
             this.container,
         );
 
-        this.button.addEventListener("click", () => {
-            const id = this.container.dataset.id;
+        this.button.addEventListener("click", onBuy);
+    }
 
-            if (!id) {
-                return;
-            }
+    set buttonText(value: string) {
+        this.button.textContent = value;
+    }
 
-            this.events.emit("card:buy", {
-                id,
-            });
-        });
+    set buttonDisabled(value: boolean) {
+        this.button.disabled = value;
     }
 
     set description(value: string) {

@@ -1,23 +1,35 @@
-import { IEvents } from "../base/Events";
 import { Card, ICard } from "./Card";
+import { ensureElement } from "../../utils/utils";
+import { categoryMap } from "../../utils/constants";
 
 export class CatalogCard extends Card<ICard> {
-    constructor(
-        container: HTMLElement,
-        private events: IEvents,
-    ) {
+    protected categoryElement: HTMLElement;
+    protected imageElement: HTMLImageElement;
+
+    constructor(container: HTMLElement, onClick: () => void) {
         super(container);
 
-        this.container.addEventListener("click", () => {
-            const id = this.container.dataset.id;
+        this.categoryElement = ensureElement<HTMLElement>(
+            ".card__category",
+            this.container,
+        );
 
-            if (!id) {
-                return;
-            }
+        this.imageElement = ensureElement<HTMLImageElement>(
+            ".card__image",
+            this.container,
+        );
 
-            this.events.emit("card:select", {
-                id,
-            });
-        });
+        this.container.addEventListener("click", onClick);
+    }
+
+    set category(value: string) {
+        this.categoryElement.textContent = value;
+
+        this.categoryElement.className = `card__category ${categoryMap[value as keyof typeof categoryMap]
+            }`;
+    }
+
+    set image(value: string) {
+        this.setImage(this.imageElement, value);
     }
 }
