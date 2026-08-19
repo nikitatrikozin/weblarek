@@ -1,4 +1,4 @@
-# 🛒 Web-Ларёк
+# 🛍️ Web-Ларёк
 
 Web-Ларёк - интернет-магазин с товарами для веб-разработчиков.
 
@@ -14,15 +14,16 @@ Web-Ларёк - интернет-магазин с товарами для ве
 - оформлять заказ;
 - получать уведомление об успешном оформлении заказа.
 
-## 🛠 Стек
+## 📲 Стек
 
 - HTML
 - SCSS
 - TypeScript
 - Vite
 
-## 📁 Структура проекта
+## 🗂️ Структура проекта
 
+```text
 src/
 ├── components/
 │   ├── api/
@@ -33,6 +34,7 @@ src/
 ├── utils/
 ├── types/
 └── main.ts
+```
 
 ## Основные части
 
@@ -48,13 +50,22 @@ src/
 # 🚀 Установка и запуск
 
 Установка зависимостей:
+
+```bash
 npm install
+```
 
 Запуск проекта в режиме разработки:
+
+```bash
 npm run dev
+```
 
 Production-сборка:
+
+```bash
 npm run build
+```
 
 # 🏗 Архитектура
 
@@ -74,6 +85,7 @@ main.ts связывает модели и представления, обра�
 
 Общая схема:
 
+```text
                  ┌─────────────┐
                  │   Server    │
                  └──────┬──────┘
@@ -104,6 +116,7 @@ main.ts связывает модели и представления, обра�
               │ Forms            │
               │ Modal / Success  │
               └──────────────────┘
+```
 
 # ⚙️ Базовые компоненты
 
@@ -117,12 +130,15 @@ main.ts связывает модели и представления, обра�
 * отображение данных через render();
 * установка изображений через setImage().
 
+```ts
 render(data?: Partial<T>): HTMLElement
+```
 
 ## Api
 
 Базовый класс для HTTP-запросов.
 
+```ts
 Поддерживает:
 get<T>(uri: string): Promise<T>
 и
@@ -131,6 +147,7 @@ post<T>(
     data: object,
     method?: ApiPostMethods
 ): Promise<T>
+```
 
 Также обрабатывает ответы сервера и ошибки запросов.
 
@@ -139,9 +156,12 @@ post<T>(
 Брокер событий, реализующий событийное взаимодействие компонентов.
 
 Основные методы:
+
+```ts
 on(event, callback)
 emit(event, data?)
 trigger(event, context?)
+```
 
 Используется для связи моделей и представлений без прямой зависимости компонентов друг от друга.
 
@@ -152,17 +172,22 @@ trigger(event, context?)
 Хранит каталог товаров и выбранный товар.
 
 Основные методы:
+
+```ts
 setProducts(products)
 getProducts()
 getProduct(id)
 setPreview(product)
 getPreview()
+```
 
 ## CartModel
 
 Управляет товарами в корзине.
 
 Основные методы:
+
+```ts
 getItems()
 add(product)
 remove(product)
@@ -170,22 +195,26 @@ clear()
 getTotal()
 getCount()
 hasProduct(id)
+```
 
 При изменении корзины модель генерирует событие cart:changed.
 
 ## BuyerModel
 
 Хранит данные покупателя:
-payment
-email
-phone
-address
+- payment
+- email
+- phone
+- address
 
 Основные методы:
+
+```ts
 setData(data)
 getData()
 clear()
 validate()
+```
 
 Модель самостоятельно проверяет заполнение данных и возвращает ошибки валидации.
 
@@ -196,14 +225,19 @@ validate()
 Специализированный слой для работы с API магазина.
 
 Получение каталога:
-GET /product/
+
+`GET /product/`
 
 Создание заказа:
-POST /order/
+
+`POST /order/`
 
 Методы:
+
+```ts
 getProducts()
 createOrder(data)
+```
 
 # 🖥 View
 
@@ -212,14 +246,20 @@ createOrder(data)
 Отображает шапку сайта и количество товаров в корзине.
 
 Событие:
+
+```ts
 basket:open
+```
 
 ## Gallery
 
 Отображает каталог товаров.
 
 Карточки каталога передаются через:
+
+```ts
 gallery.catalog = cards
+```
 
 ## Card
 
@@ -234,8 +274,6 @@ gallery.catalog = cards
 Общие данные:
 
 * название;
-* категория;
-* изображение;
 * цена.
 
 ## CatalogCard
@@ -243,7 +281,10 @@ gallery.catalog = cards
 Отображает товар в каталоге.
 
 При выборе товара генерирует:
+
+```ts
 card:select
+```
 
 ## PreviewCard
 
@@ -252,33 +293,45 @@ card:select
 Содержит описание и кнопку покупки.
 
 Событие:
+
+```ts
 card:buy
+```
 
 ## Basket
 
 Отображает содержимое корзины, общую стоимость и кнопку оформления заказа.
 
 Основные данные:
-items
-total
+* items
+* total
 
 ## BasketCard
 
 Отображает отдельный товар в корзине.
 
-При удалении генерирует:
+При удалении генерирует событие:
+
+```ts
 basket:remove
+```
 
 ## Modal
 
 Управляет модальным окном:
+
+```ts
 open(content)
 close()
+```
 
 При закрытии генерирует:
-modal:close
 
-# 📝 Формы
+```ts
+modal:close
+```
+
+# 👔 Формы
 
 ## Form
 
@@ -290,8 +343,8 @@ modal:close
 * ContactsForm
 
 Общие возможности:
-valid
-errors
+* valid
+* errors
 
 ## OrderForm
 
@@ -303,9 +356,12 @@ errors
 2. вводит адрес доставки.
 
 События:
+
+```ts
 payment:change
 order:change
 order:submit
+```
 
 ## ContactsForm
 
@@ -317,8 +373,11 @@ order:submit
 * телефон.
 
 События:
+
+```ts
 contacts:change
 contacts:submit
+```
 
 ## Success
 
@@ -327,62 +386,66 @@ contacts:submit
 Показывает сумму списанных средств.
 
 Событие закрытия:
-success:close
 
-# 📡 Основные события
+```ts
+success:close
+```
+
+# 📍 Основные события
 
 ## Событие - Назначение
 
-products:changed - Обновление каталога
+`products:changed` - Обновление каталога
 
-card:select - Выбор товара
+`card:select` - Выбор товара
 
-preview:changed - Открытие подробной информации
+`preview:changed` - Открытие подробной информации
 
-card:buy - Добавление товара в корзину
+`card:buy` - Добавление товара в корзину
 
-basket:open - Открытие корзины
+`basket:open` - Открытие корзины
 
-basket:render - Отрисовка корзины
+`basket:render` - Отрисовка корзины
 
-basket:remove - Удаление товара
+`basket:remove` - Удаление товара
 
-cart:changed - Изменение корзины
+`cart:changed` - Изменение корзины
 
-payment:change - Изменение способа оплаты
+`payment:change` - Изменение способа оплаты
 
-order:change - Изменение адреса
+`order:change` - Изменение адреса
 
-order:render - Открытие формы заказа
+`order:render` - Открытие формы заказа
 
-order:valid - Обновление валидации заказа
+`order:valid` - Обновление валидации заказа
 
-order:submit - Переход к контактным данным
+`order:submit` - Переход к контактным данным
 
-contacts:open - Открытие формы контактов
+`contacts:open` - Открытие формы контактов
 
-contacts:change - Изменение контактных данных
+`contacts:change` - Изменение контактных данных
 
-contacts:valid - Обновление валидации контактов
+`contacts:valid` - Обновление валидации контактов
 
-contacts:submit - Отправка контактных данных
+`contacts:submit` - Отправка контактных данных
 
-order:send - Отправка заказа на сервер
+`order:send` - Отправка заказа на сервер
 
-order:success - Успешное оформление заказа
+`order:success` - Успешное оформление заказа
 
-success:close - Закрытие окна успеха
+`success:close` - Закрытие окна успеха
 
-modal:close - Закрытие модального окна
+`modal:close` - Закрытие модального окна
 
-header:counter - Обновление счётчика корзины
+`header:counter` - Обновление счётчика корзины
 
-buyer:changed - Изменение данных покупателя
+`buyer:changed` - Изменение данных покупателя
 
 # 🔄 Основной сценарий
 
 ## Загрузка каталога
 
+```text
 Server
   ↓
 WebLarekApi
@@ -394,9 +457,11 @@ products:changed
 Gallery
   ↓
 CatalogCard
+```
 
 ## Покупка товара
 
+```text
 CatalogCard
   ↓
 card:select
@@ -408,9 +473,11 @@ PreviewCard
 card:buy
   ↓
 CartModel
+```
 
 ## Оформление заказа
 
+```text
 Basket
   ↓
 OrderForm
@@ -424,9 +491,11 @@ WebLarekApi
 POST /order/
   ↓
 Success
+```
 
 ## После успешного заказа
 
+```text
 Успешный ответ сервера
         ↓
 CartModel.clear()
@@ -436,9 +505,11 @@ BuyerModel.clear()
 Счётчик корзины = 0
         ↓
 Окно успешного заказа
+```
 
 # 🎯 Итог
 
+```text
 Web-Ларёк реализует полный сценарий интернет-магазина:
 
 Каталог
@@ -454,5 +525,6 @@ Web-Ларёк реализует полный сценарий интернет
 Отправка заказа
    ↓
 Успешное оформление
+```
 
 Проект использует TypeScript, компонентный подход, модели для управления состоянием и событийную архитектуру для взаимодействия между частями приложения.
